@@ -92,20 +92,50 @@ import numpy as np
 
     # 100 students?
 
-fail_poss = (1/250)
-poss = ["pass","fail"]
-students = 100
-n_sims = 100_000
-installs = np.random.choice(poss, (n_sims, students))
-installs = pd.DataFrame(installs)
-
+# fail_poss = (1/250)
+# poss = ["pass","fail"]
+# students = 100
+# n_sims = 100_000
+# installs = np.random.choice(poss, (n_sims, students), p = [(249/250),(1/250)])
+# installs = pd.DataFrame(installs)
+# prob = 1 - ((installs == "fail").sum(axis = 1)).mean()
+# print(prob)
+                                                                                                                             
 
     # What is the probability that we observe an installation issue within the first 150 students that download anaconda?
 
+# fail_poss = (1/250)
+# poss = ["pass","fail"]
+# students = 150
+# n_sims = 100_000
+# installs = np.random.choice(poss, (n_sims, students), p = [(1 - fail_poss),fail_poss])
+# installs = pd.DataFrame(installs)
+# prob = ((installs == "fail").sum(axis = 1)).mean()
+# print(prob)
+
     # How likely is it that 450 students all download anaconda without an issue?
+
+fail_poss = (1/250)
+poss = ["pass","fail"]
+students = 450
+n_sims = 100_000
+installs = np.random.choice(poss, (n_sims, students), p = [(1 - fail_poss),fail_poss])
+installs = pd.DataFrame(installs)
+prob = (((installs == "success").sum(axis = 1)) == students ).mean()
+print(prob)
+
 
     # There's a 70% chance on any given day that there will be at least one food truck at Travis Park. 
     # However, you haven't seen a food truck there in 3 days. How unlikely is this?
+
+food_poss = (.70)
+days_passed = 3
+n_sims = 100_000
+installs = np.random.random((n_sims, days_passed))
+installs = pd.DataFrame(installs)
+
+prob = ((installs == "fail").sum(axis = 1)).mean()
+print(prob)
 
     # How likely is it that a food truck will show up sometime this week?
 
