@@ -71,11 +71,11 @@ print(clicks.sf(97))
 # are a probability rounded to the hundreths place. 
 # Looking to save time, you put down random probabilities as the answer to each question.
 
-ans = stats.poisson(100)
+ans = stats.binom(100, .01)
 
 #     What is the probability that at least one of your first 60 answers is correct?
 
-print(ans.cdf(60))
+print(ans.cdf(0))
 
 # The codeup staff tends to get upset when the student break area is not cleaned up. 
 # Suppose that there's a 3% chance that any one student cleans the break area when they visit it, 
