@@ -2,10 +2,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy import stats
-#import env
+import env
 
-#url = f'mysql+pymysql://{env.user}:{env.password}@{env.host}/employees'
-#pd.read_sql('SELECT * FROM departments', url)
+def get_db_url(hostname, username, password, database):
+    url = f'mysql+pymysql://{username}:{password}@{hostname}/{database}'
+    return url
+
+url = get_db_url(env.hostname, env.username, env.password, "employees")
+
 
 
 # A bank found that the average number of cars waiting during the noon hour at a drive-up window 
@@ -103,10 +107,40 @@ print(lunch)
 # defined by the calculated mean and standard deviation then compare this answer to the actual values present in 
 # the salaries dataset.
 
+salaries = pd.read_sql('SELECT salary FROM employees \
+                            JOIN salaries \
+                            USING(emp_no) \
+                            WHERE to_date > CURDATE()', url)
+
 #     What percent of employees earn less than 60,000?
+
+num_salaries_LT60K = len(salaries[salaries.salary < 60_000])
+perc_LT60K = (num_salaries_LT60K / (len(salaries))) * 100
+print(perc_LT60K)
+emp_salaries = stats.norm(salaries.mean(), salaries.std())
+print(salaries.mean(), salaries.std())
+print(emp_salaries.cdf(60_000))
 
 #     What percent of employees earn more than 95,000?
 
+num_salaries_MT95K = len(salaries[salaries.salary > 95_000])
+perc_MT95K = (num_salaries_MT95K / (len(salaries))) * 100
+print(perc_MT95K)
+emp_salaries = stats.norm(salaries.mean(), salaries.std())
+print(emp_salaries.sf(95_000))
+
 #     What percent of employees earn between 65,000 and 80,000?
 
+num_salaries_65T80K = len(salaries[(salaries.salary > 65_000) & (salaries.salary < 80_000)])
+perc_65T80K = (num_salaries_65T80K / (len(salaries))) * 100
+print(perc_65T80K)
+emp_salaries = stats.norm(salaries.mean(), salaries.std())
+print(emp_salaries.cdf([65_000, 80_000]))
+
 #     What do the top 5% of employees make?
+
+emp_salaries = stats.norm(salaries.mean(), salaries.std())
+print(emp_salaries.ppf(.95))
+
+# The top 5% make at least $100,484.64 salary.
+
