@@ -153,6 +153,6 @@ print(emp_salaries.cdf([65_000, 80_000]))
 #     What do the top 5% of employees make?
 
 emp_salaries = stats.norm(salaries.mean(), salaries.std())
-print(emp_salaries.ppf(.95))
+print(emp_salaries.isf(.05))
 
 # The top 5% make at least $100,484.64 salary.
