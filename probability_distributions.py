@@ -29,7 +29,7 @@ print(drv_thru.sf(2))
 
 #     How likely is it that the drive through gets at least 1 car?
 
-print(drv_thru.cdf(1))
+print(drv_thru.sf(0))
 
 # Grades of State University graduates are normally distributed with a mean of 3.0 and a standard deviation of .3.
 # Calculate the following:
@@ -49,8 +49,9 @@ print(grades.ppf(.15))
 #     An eccentric alumnus left scholarship money for students in the third decile from the bottom of their class. 
 #     Determine the range of the third decile. Would a student with a 2.8 grade point average qualify for this scholarship?
 
-decile3 = grades.ppf(.3)
-decile2 = grades.ppf(.2)
+decile3 = grades.ppf(0.3)
+decile2 = grades.ppf(0.2)
+# or grades.ppf([0.2, 0.3])
 r_dec3 = decile3 - decile2
 print(decile2)
 print(r_dec3)
@@ -58,38 +59,46 @@ print(r_dec3)
 
 #     If I have a GPA of 3.5, what percentile am I in?
 
-print(grades.pdf(3.5))
+print(grades.cdf(3.5))
 
 # A marketing website has an average click-through rate of 2%. 
 # One day they observe 4326 visitors and 97 click-throughs. 
 # How likely is it that this many people or more click through?
 
 clicks = stats.binom(4326, .02)
-print(clicks.sf(97))
+print(clicks.sf(96))
 
 # You are working on some statistics homework consisting of 100 questions where all of the answers 
 # are a probability rounded to the hundreths place. 
 # Looking to save time, you put down random probabilities as the answer to each question.
 
-ans = stats.binom(100, .01)
-
 #     What is the probability that at least one of your first 60 answers is correct?
 
-print(ans.cdf(0))
+ans = stats.binom(60, .01)
+print(ans.sf(0))
 
 # The codeup staff tends to get upset when the student break area is not cleaned up. 
 # Suppose that there's a 3% chance that any one student cleans the break area when they visit it, 
 # and, on any given day, about 90% of the 3 active cohorts of 22 students visit the break area. 
 # How likely is it that the break area gets cleaned up each day? 
 
-clean = stats.binom(66, .03)
-print(clean.sf(.9))
+# n_stud_on_break = 90% x 3 classes x 22 students per class = about 59 students 
+clean = stats.binom(59, .03)
+print(clean.pmf(0))
 
 # How likely is it that it goes two days without getting cleaned up? 
 
+# n_stud_on_break = 90% x 3 classes x 22 students per class x 2 days = about 118 trials
 
+clean = stats.binom(118, .03)
+print(clean.pmf(0))
 
 # All week?
+
+# n_stud_on_break = 90% x 3 classes x 22 students per class x 5 days = about 295 trials
+
+clean = stats.binom(295, .03)
+print(clean.pmf(0))
 
 # You want to get lunch at La Panaderia, but notice that the line is usually very long at lunchtime. 
 # After several weeks of careful observation, you notice that the average number of people in line when
@@ -98,8 +107,12 @@ print(clean.sf(.9))
 # what is the likelihood that you have at least 15 minutes left to eat your food before you have to go back to class? 
 # Assume you have one hour for lunch, and ignore travel time to and from La Panaderia.
 
-line = stats.norm(15, 3)
-lunch = line.cdf(17)
+# 15 people x 2 minutes = mean of 30 minutes, 3 people x 2 minutes = std dev of 6 minutes
+# time left for lunch = 60 minutes for lunch - 10 minutes to receive order - 15 minutes to eat - 2 minutes to order = 
+# 33 minutes
+ 
+line = stats.norm(30, 6)
+lunch = line.cdf(33)
 print(lunch)
 
 # Connect to the employees database and find the average salary of current employees, along with the standard deviation. 
@@ -143,4 +156,3 @@ emp_salaries = stats.norm(salaries.mean(), salaries.std())
 print(emp_salaries.ppf(.95))
 
 # The top 5% make at least $100,484.64 salary.
-
