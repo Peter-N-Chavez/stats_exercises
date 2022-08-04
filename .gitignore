@@ -1,3 +1,5 @@
 env.py
 dist_sample_means.png
 telco_churn.csv
+*.png
+chi_squared_lesson.ipynb
